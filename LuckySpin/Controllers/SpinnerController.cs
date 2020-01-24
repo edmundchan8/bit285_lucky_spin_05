@@ -11,15 +11,17 @@ namespace LuckySpin.Controllers
     {
         Random random;
         //TODO: Create a new instance variable of type RepoService 
-
+        RepoService repository;
         /***
          * Constructor
          * TODO: Inject a RepoService object in the Constructor parameter
          *       Set the instance variable's initial value using the parameter 
          */
-        public SpinnerController()
+
+        public SpinnerController(RepoService repo)
         {
             random = new Random(); // Notice "random" is not injected, just created here
+            repository = repo;
         }
 
         /***
@@ -29,19 +31,28 @@ namespace LuckySpin.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-                return View();
+
+            return View();
         }
 
         [HttpPost]
         public IActionResult Index(Player player)
         {
-            return RedirectToAction("Spin", player);
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Spin", player);
+            }
+
+            else
+            {
+                return View();
+            }
         }
 
         /***
          * Spin Action
-         **/  
-        [HttpGet]       
+         **/
+        [HttpGet]
         public IActionResult Spin(Player player)
         {
             // Create a Spin with its data
@@ -55,10 +66,11 @@ namespace LuckySpin.Controllers
             spin.IsWinner = (spin.A == spin.Luck || spin.B == spin.Luck || spin.C == spin.Luck);
 
             // Store some View data
-            ViewBag.Display = spin.IsWinner ? "block": "none";
+            ViewBag.Display = spin.IsWinner ? "block" : "none";
             ViewBag.FirstName = player.FirstName;
 
             //TODO: add the spin to the Spin Repository
+            repository.AddSpins(spin);
             return View(spin);
         }
 
@@ -68,7 +80,7 @@ namespace LuckySpin.Controllers
         [HttpGet]
         public IActionResult LuckList()
         {
-            return View();
+            return View(repository.SpinRepository);
         }
     }
 }

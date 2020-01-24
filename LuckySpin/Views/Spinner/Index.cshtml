@@ -6,10 +6,11 @@
 <h2>Pick your Number</h2>
 <form asp-route="Spinner/Index">
     <fieldset>
-<!-- TODO: Add tag helpers attributes to the <input>, <select> and <span> elements -->
-        <label><input type="text" /><span></span></label>
+        <!-- TODO: Add tag helpers attributes to the <input>, <select> and <span> elements -->
+        <label><input asp-for="FirstName" /><span></span></label>
         <label>
-            <select>
+            <select asp-for="LuckyNumber">
+
                 <option selected disabled>Luck Number</option>
                 <option>1</option>
                 <option>2</option>
