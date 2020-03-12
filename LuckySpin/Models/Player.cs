@@ -15,7 +15,6 @@ namespace LuckySpin.Models
         //TODO: Include one annotation for LuckyNumber
         // one that limits its Range between 1 and 9
         [Range (1, 9)]
-        [Display (Prompt = "Choose a number")]
         public int LuckyNumber { get; set; }
     }
 }
